@@ -2,7 +2,7 @@ close all; clear all;
 
 hdr;
 
-get_eig
+get_eig;
 
 %eig = dlmread("eig.txt");
 

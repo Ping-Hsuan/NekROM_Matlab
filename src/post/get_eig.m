@@ -1,5 +1,5 @@
 gu = dlmread("gu");
-gu = reshape(gu,sqrt(length(gu),sqrt(length(gu)));
+gu = reshape(gu,sqrt(length(gu)),sqrt(length(gu)));
 
 [V, D] = eig(gu);
 
