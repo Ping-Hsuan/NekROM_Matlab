@@ -22,7 +22,7 @@ else
 end
 
 %% Setup ROM parameters
-T = 250;
+T = 25;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -71,7 +71,9 @@ for ii=1:size(nb_list,2)
             semilogy(t,abs(ene_snap.b-ene.b)./ene_snap.b,...
                      'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
         elseif (ndata ~= ns)
-            semilogy(t,abs(ene_snap.b(20:20:end)-ene.b)./ene_snap.b(20:20:end),...
+            start_idx = ns/ndata;
+            figure(2)
+            semilogy(t,abs(ene_snap.b(start_idx:start_idx:end)-ene.b)./ene_snap.b(start_idx:start_idx:end),...
                      'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
         else
             exit
