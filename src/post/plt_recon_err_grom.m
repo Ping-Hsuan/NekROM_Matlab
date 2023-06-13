@@ -32,7 +32,7 @@ else
     ifquad = true;
 end
 
-T = 250;
+T = 25;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -51,8 +51,9 @@ for ii=1:size(nb_list,2)
         err  = snap(1:nb+1,:)-grom';
         snapnorm_L2 = sqrt(snap(1:nb+1,:)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,:));
     elseif (ndata ~= ns)
-        err  = snap(1:nb+1,5:5:end)-grom';
-        snapnorm_L2 = sqrt(snap(1:nb+1,5:5:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,5:5:end));
+        start_idx = ns/ndata;
+        err  = snap(1:nb+1,start_idx:start_idx:end)-grom';
+        snapnorm_L2 = sqrt(snap(1:nb+1,start_idx:start_idx:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,start_idx:start_idx:end));
     end
     recon_err_L2 = sqrt(err'*bu(1:nb+1,1:nb+1)*err);
 
