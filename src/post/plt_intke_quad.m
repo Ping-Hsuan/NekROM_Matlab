@@ -87,14 +87,14 @@ for ii=1:size(nb_list,2)
         end
     end
 
-    if (ifskew)
+    if (ifquad)
         cpr_list = [10 100 200 400];
 
         for kk=1:size(cpr_list,2)
             cpr = cpr_list(kk);
-            cpd = dlmread("cpd_skew_"+nb+"_rank"+cpr+"/ucoef");
+            cpd = dlmread("cpd_quad_"+nb+"_rank"+cpr+"/ucoef");
             cpd = reshape(cpd,length(cpd)/(nb+1),nb+1);
-            ua = dlmread("cpd_skew_"+nb+"_rank"+cpr+"/ua");
+            ua = dlmread("cpd_quad_"+nb+"_rank"+cpr+"/ua");
             ene_cpd = table;
             for jj=1:size(grom,1)
                 ene_cpd = [ene_cpd;{cpd(jj,:)*bu(1:nb+1,1:nb+1)*cpd(jj,:)' - ...
@@ -125,7 +125,7 @@ xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
 %ylim([0.03 0.04]);
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
 leg.ItemTokenSize = [10,18];
-formatfig(ax); print(gcf,"intke_skew","-dpdf","-r300"); close(1)
+formatfig(ax); print(gcf,"intke_quad","-dpdf","-r300"); close(1)
 
 figure(2)
 ax=gca; ax.FontSize=5;
@@ -136,5 +136,5 @@ ylim([1e-5 1e2])
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
 leg.ItemTokenSize = [10,18]
 formatfig(ax)
-print(gcf,"intke_skew_err","-dpdf","-r300")
+print(gcf,"intke_quad_err","-dpdf","-r300")
 close(2)

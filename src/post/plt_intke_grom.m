@@ -4,11 +4,13 @@ hdr;
 
 %% Load reduced mass matrix for computing L^2 norm
 bu = dlmread("bu");
-bu = reshape(bu,301,301);
+mb = sqrt(length(bu));
+bu = reshape(bu,mb,mb);
 
 %% Load projected coefficients of snapshots
 snap = dlmread("uk");
-snap = reshape(snap,301,2000);
+ns = length(snap)/mb;
+snap = reshape(snap,mb,ns);
 msnap = mean(snap,2);
 
 %% Setting up flags
@@ -20,7 +22,7 @@ else
 end
 
 %% Setup ROM parameters
-T = 25;
+T = 100;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -32,7 +34,7 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'Units', 'Inches', 'Position', [0, 0, fig_width, fig_height],...
     'PaperUnits', 'Inches', 'PaperSize', [fig_width, fig_height])
 
-nb_list = [10, 20, 40, 80, 100, 200, 300];
+nb_list = [10, 20, 40, 80, 100, 200];
 cmap = colormap(lines);
 
 for ii=1:size(nb_list,2)
@@ -50,7 +52,8 @@ for ii=1:size(nb_list,2)
     nb = nb_list(ii);
     if (ifgrom)
         grom = dlmread("g-rom_"+nb+"/ucoef");
-        grom = reshape(grom,100,nb+1);
+        ndata = length(grom)/(nb+1);
+        grom = reshape(grom,ndata,nb+1);
         ua = dlmread("g-rom_"+nb+"/ua");
         ene = table;
         for jj=1:size(grom,1)
@@ -63,9 +66,16 @@ for ii=1:size(nb_list,2)
         t=linspace(T/size(ene.b,1),T,size(ene.b,1));
         semilogy(t,ene.b,'-.',cr,cmap(ii,:),dispname,"G-ROM, $N="+nb+"$"); hold on
 
-        figure(2)
-        semilogy(t,abs(ene_snap.b(20:20:end)-ene.b)./ene_snap.b(20:20:end),...
-                 'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
+        if (ndata == ns)
+            figure(2)
+            semilogy(t,abs(ene_snap.b-ene.b)./ene_snap.b,...
+                     'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
+        elseif (ndata ~= ns)
+            semilogy(t,abs(ene_snap.b(20:20:end)-ene.b)./ene_snap.b(20:20:end),...
+                     'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
+        else
+            exit
+        end
     end
 end
 figure(1);
