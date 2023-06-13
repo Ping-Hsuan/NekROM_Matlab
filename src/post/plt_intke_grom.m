@@ -22,7 +22,7 @@ else
 end
 
 %% Setup ROM parameters
-T = 100;
+T = 250;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -34,7 +34,7 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'Units', 'Inches', 'Position', [0, 0, fig_width, fig_height],...
     'PaperUnits', 'Inches', 'PaperSize', [fig_width, fig_height])
 
-nb_list = [10, 20, 40, 80, 100, 200];
+nb_list = [10, 20, 40, 80, 100, 200, 300];
 cmap = colormap(lines);
 
 for ii=1:size(nb_list,2)
