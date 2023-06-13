@@ -33,7 +33,7 @@ else
     ifquad = true;
 end
 
-T = 100;
+T = 25;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -56,7 +56,7 @@ for ii=1:size(nb_list,2)
                     msnap(1:nb+1)'*bu(1:nb+1,1:nb+1)*msnap(1:nb+1)}];
     end
     figure(1)
-    t=linspace(100/size(ene_snap.b,1),100,size(ene_snap.b,1));
+    t=linspace(T/size(ene_snap.b,1),T,size(ene_snap.b,1));
     semilogy(t,ene_snap.b,'k-',dispname,"Projection, $N="+nb+"$"); hold on
 
     nb = nb_list(ii);
@@ -72,7 +72,7 @@ for ii=1:size(nb_list,2)
                    ua'*bu(1:nb+1,1:nb+1)*ua}];
         end
         figure(1)
-        t=linspace(100/size(ene.b,1),100,size(ene.b,1));
+        t=linspace(T/size(ene.b,1),T,size(ene.b,1));
         semilogy(t,ene.b,'-.',cr,cmap(ii,:),dispname,"G-ROM, $N="+nb+"$"); hold on
 
         if (ndata == ns)
@@ -80,16 +80,18 @@ for ii=1:size(nb_list,2)
             semilogy(t,abs(ene_snap.b-ene.b)./ene_snap.b,...
                      'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
         elseif (ndata ~= ns)
-            semilogy(t,abs(ene_snap.b(20:20:end)-ene.b)./ene_snap.b(20:20:end),...
+            start_idx = ns/ndata;
+            figure(2)
+            semilogy(t,abs(ene_snap.b(start_idx:start_idx:end)-ene.b)./ene_snap.b(start_idx:start_idx:end),...
                      'x',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
         else
             exit
         end
     end
 
-    if (ifquad)
-        cpr_list = [10 100 200 400];
+    cpr_list = [10 100 200 400];
 
+    if (ifquad)
         for kk=1:size(cpr_list,2)
             cpr = cpr_list(kk);
             cpd = dlmread("cpd_quad_"+nb+"_rank"+cpr+"/ucoef");
@@ -101,18 +103,51 @@ for ii=1:size(nb_list,2)
                            2*cpd(jj,:)*bu(1:nb+1,1:nb+1)*ua + ...
                            ua'*bu(1:nb+1,1:nb+1)*ua}];
             end
-            t=linspace(100/size(ene_cpd.b,1),100,size(ene_cpd.b,1));
+            t=linspace(T/size(ene_cpd.b,1),T,size(ene_cpd.b,1));
 
             figure(1)
-            semilogy(t,ene_cpd.b,'-.',cr,cmap(kk+1,:),dispname,"CPD-ROM, R="+cpr); hold on
+            semilogy(t,ene_cpd.b,':',cr,cmap(kk+1,:),dispname,"ALS-quad, R="+cpr); hold on
             if (ndata == ns)
                 figure(2)
                 semilogy(t,abs(ene_snap.b-ene_cpd.b)./ene_snap.b,...
-                         'x',cr,cmap(kk+1,:),dispname,"CPD-ROM, R="+cpr,ms,2); hold on
+                         ':',cr,cmap(kk+1,:),dispname,"ALS-quad, R="+cpr,ms,2); hold on
             elseif (ndata ~= ns)
+                start_idx = ns/ndata;
                 figure(2)
-                semilogy(t,abs(ene_snap.b(20:20:end)-ene_cpd.b)./ene_snap.b(20:20:end),...
-                         'x',cr,cmap(kk+1,:),dispname,"CPD-ROM, R="+cpr,ms,2); hold on
+                semilogy(t,abs(ene_snap.b(start_idx:start_idx:end)-ene_cpd.b)./ene_snap.b(start_idx:start_idx:end),...
+                         ':',cr,cmap(kk+1,:),dispname,"ALS-quad, R="+cpr,ms,2); hold on
+            else
+                exit
+            end
+        end
+    end
+    if (ifskew)
+        cpr_list = [10 100 200 400];
+
+        for kk=1:size(cpr_list,2)
+            cpr = cpr_list(kk);
+            cpd = dlmread("cpd_skew_"+nb+"_rank"+cpr+"/ucoef");
+            cpd = reshape(cpd,length(cpd)/(nb+1),nb+1);
+            ua = dlmread("cpd_skew_"+nb+"_rank"+cpr+"/ua");
+            ene_cpd = table;
+            for jj=1:size(grom,1)
+                ene_cpd = [ene_cpd;{cpd(jj,:)*bu(1:nb+1,1:nb+1)*cpd(jj,:)' - ...
+                           2*cpd(jj,:)*bu(1:nb+1,1:nb+1)*ua + ...
+                           ua'*bu(1:nb+1,1:nb+1)*ua}];
+            end
+            t=linspace(T/size(ene_cpd.b,1),T,size(ene_cpd.b,1));
+
+            figure(1)
+            semilogy(t,ene_cpd.b,'-.',cr,cmap(kk+1,:),dispname,"ALS, R="+cpr); hold on
+            if (ndata == ns)
+                figure(2)
+                semilogy(t,abs(ene_snap.b-ene_cpd.b)./ene_snap.b,...
+                         '-.',cr,cmap(kk+1,:),dispname,"ALS, R="+cpr,ms,2); hold on
+            elseif (ndata ~= ns)
+                start_idx = ns/ndata;
+                figure(2)
+                semilogy(t,abs(ene_snap.b(start_idx:start_idx:end)-ene_cpd.b)./ene_snap.b(start_idx:start_idx:end),...
+                         '-.',cr,cmap(kk+1,:),dispname,"ALS, R="+cpr,ms,2); hold on
             else
                 exit
             end
@@ -120,21 +155,21 @@ for ii=1:size(nb_list,2)
     end
 end
 figure(1);
-ax=gca; ax.FontSize=5; xlim([0, 100])
-xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
+ax=gca; ax.FontSize=5; xlim([0, T])
+xlabel("$t$",intp,ltx,fs,4); ylabel("$TKE(t)$",intp,ltx,fs,4);
 %ylim([0.03 0.04]);
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
-leg.ItemTokenSize = [10,18];
-formatfig(ax); print(gcf,"intke_quad","-dpdf","-r300"); close(1)
+leg.ItemTokenSize = [16,18];
+formatfig(ax); print(gcf,"intke","-dpdf","-r300"); close(1)
 
 figure(2)
 ax=gca; ax.FontSize=5;
-xlabel("$t$",intp,ltx,fs,6);
-ylabel("$TKE$",intp,ltx,fs,6);
-xlim([0, 100])
+xlabel("$t$",intp,ltx,fs,4);
+ylabel("$|TKE(t)-TKE_{ROM}(t)|/|TKE(t)|$",intp,ltx,fs,4);
+xlim([0, T])
 ylim([1e-5 1e2])
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
-leg.ItemTokenSize = [10,18]
+leg.ItemTokenSize = [16,18]
 formatfig(ax)
-print(gcf,"intke_quad_err","-dpdf","-r300")
+print(gcf,"intke_err","-dpdf","-r300")
 close(2)

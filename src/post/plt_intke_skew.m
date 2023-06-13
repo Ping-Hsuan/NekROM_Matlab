@@ -57,7 +57,7 @@ for ii=1:size(nb_list,2)
     end
     figure(1)
     t=linspace(100/size(ene_snap.b,1),100,size(ene_snap.b,1));
-    semilogy(t,ene_snap.b,'k-',dispname,"Porjection, $N="+nb+"$"); hold on
+    semilogy(t,ene_snap.b,'k-',dispname,"Projection, $N="+nb+"$"); hold on
 
     nb = nb_list(ii);
     if (ifgrom)

@@ -47,7 +47,7 @@ for ii=1:size(nb_list,2)
     end
     figure(1)
     t=linspace(T/size(ene_snap.b,1),T,size(ene_snap.b,1));
-    semilogy(t,ene_snap.b,'-',cr,cmap(ii,:),dispname,"Porjection, $N="+nb+"$"); hold on
+    semilogy(t,ene_snap.b,'-',cr,cmap(ii,:),dispname,"Projection, $N="+nb+"$"); hold on
 
     nb = nb_list(ii);
     if (ifgrom)
@@ -84,7 +84,7 @@ figure(1);
 ax=gca; ax.FontSize=5; xlim([0, T])
 xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
 %ylim([0.03 0.04]);
-leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
+leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',3);
 leg.ItemTokenSize = [12,18];
 formatfig(ax); print(gcf,"intke_grom","-dpdf","-r300"); close(1)
 
@@ -92,6 +92,6 @@ figure(2);
 ax=gca; ax.FontSize=5;
 xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
 xlim([0, T]); ylim([1e-5 1e2])
-leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
+leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',3);
 leg.ItemTokenSize = [12,18]
 formatfig(ax); print(gcf,"intke_grom_err","-dpdf","-r300"); close(2)
