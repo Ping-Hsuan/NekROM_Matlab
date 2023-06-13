@@ -61,8 +61,8 @@ for ii=1:size(nb_list,2)
     semilogy(t,diag(recon_err_L2)./diag(snapnorm_L2),'-',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
 end
 ax=gca; ax.FontSize=5;
-xlabel("$t$",intp,ltx,fs,6);
-ylabel("$\|\Pi u_{snapshot}(t) - u_{ROM}(t)\|_{L^2}\|/\|\Pi u_{snapshot}(t)\|_{L^2}$",intp,ltx,fs,6);
+xlabel("$t$",intp,ltx,fs,4);
+ylabel("$\|\Pi u(t) - u_{ROM}(t)\|_{L^2}\|/\|\Pi u(t)\|_{L^2}$",intp,ltx,fs,4);
 xlim([0, T])
 leg = legend({}, fs,4,intp,ltx,'location','best','NumColumns',3);
 leg.ItemTokenSize = [16,18]

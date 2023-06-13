@@ -32,7 +32,7 @@ else
     ifquad = true;
 end
 
-T = 100;
+T = 25;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
@@ -51,8 +51,9 @@ for ii=1:size(nb_list,2)
         err  = snap(1:nb+1,:)-grom';
         snapnorm_L2 = sqrt(snap(1:nb+1,:)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,:));
     elseif (ndata ~= ns)
-        err  = snap(1:nb+1,5:5:end)-grom';
-        snapnorm_L2 = sqrt(snap(1:nb+1,5:5:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,5:5:end));
+        start_idx = ns/ndata;
+        err  = snap(1:nb+1,start_idx:start_idx:end)-grom';
+        snapnorm_L2 = sqrt(snap(1:nb+1,start_idx:start_idx:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,start_idx:start_idx:end));
     end
     recon_err_L2 = sqrt(err'*bu(1:nb+1,1:nb+1)*err);
 
@@ -68,8 +69,9 @@ for ii=1:size(nb_list,2)
             err  = snap(1:nb+1,:)-cpd';
             snapnorm_L2 = sqrt(snap(1:nb+1,:)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,:));
         elseif (ndata ~= ns)
-            err  = snap(1:nb+1,5:5:end)-cpd';
-            snapnorm_L2 = sqrt(snap(1:nb+1,5:5:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,5:5:end));
+            start_idx = ns/ndata;
+            err  = snap(1:nb+1,start_idx:start_idx:end)-cpd';
+            snapnorm_L2 = sqrt(snap(1:nb+1,start_idx:start_idx:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,start_idx:start_idx:end));
         end
         recon_err_L2 = sqrt(err'*bu(1:nb+1,1:nb+1)*err);
 
@@ -84,8 +86,9 @@ for ii=1:size(nb_list,2)
             err  = snap(1:nb+1,:)-cpd';
             snapnorm_L2 = sqrt(snap(1:nb+1,:)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,:));
         elseif (ndata ~= ns)
-            err  = snap(1:nb+1,5:5:end)-cpd';
-            snapnorm_L2 = sqrt(snap(1:nb+1,5:5:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,5:5:end));
+            start_idx = ns/ndata;
+            err  = snap(1:nb+1,start_idx:start_idx:end)-cpd';
+            snapnorm_L2 = sqrt(snap(1:nb+1,start_idx:start_idx:end)'*bu(1:nb+1,1:nb+1)*snap(1:nb+1,start_idx:start_idx:end));
         end
         recon_err_L2 = sqrt(err'*bu(1:nb+1,1:nb+1)*err);
         t=linspace(T/size(err,2),T,size(err,2));
@@ -93,8 +96,8 @@ for ii=1:size(nb_list,2)
     end
 end
 ax=gca; ax.FontSize=5;
-xlabel("$t$",intp,ltx,fs,6);
-ylabel("$\|\Pi u_{snapshot}(t) - u_{ROM}(t)\|_{L^2}\|/\|\Pi u_{snapshot}(t)\|_{L^2}$",intp,ltx,fs,6);
+xlabel("$t$",intp,ltx,fs,4);
+ylabel("$\|\Pi u(t) - u_{ROM}(t)\|_{L^2}\|/\|\Pi u(t)\|_{L^2}$",intp,ltx,fs,4);
 xlim([0, T])
 leg = legend({}, fs,4,intp,ltx,'location','best','NumColumns',3);
 leg.ItemTokenSize = [16,18]
