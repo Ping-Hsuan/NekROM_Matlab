@@ -32,14 +32,14 @@ else
     ifquad = true;
 end
 
-T = 25;
+T = 100;
 
 f=figure(1);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'Units', 'Inches', 'Position', [0, 0, fig_width, fig_height],...
     'PaperUnits', 'Inches', 'PaperSize', [fig_width, fig_height])
 
-nb_list = [100];
+nb_list = [300];
 cmap = colormap(lines);
 for ii=1:size(nb_list,2)
     nb = nb_list(ii);
@@ -58,9 +58,9 @@ for ii=1:size(nb_list,2)
     recon_err_L2 = sqrt(err'*bu(1:nb+1,1:nb+1)*err);
 
     t = linspace(T/ndata,T,ndata);
-    semilogy(t,diag(recon_err_L2)./diag(snapnorm_L2),'-',cr,cmap(ii,:),dispname,"$N="+nb+"$",ms,2); hold on
+    semilogy(t,diag(recon_err_L2)./diag(snapnorm_L2),'-',cr,cmap(ii,:),dispname,"G-ROM, $N="+nb+"$",ms,2); hold on
 
-    cpr_list = [10 100 200 400];
+    cpr_list = [10 100 200 400 800];
     for kk=1:size(cpr_list,2)
         cpr = cpr_list(kk);
         cpd = dlmread("cpd_quad_"+nb+"_rank"+cpr+"/ucoef");
