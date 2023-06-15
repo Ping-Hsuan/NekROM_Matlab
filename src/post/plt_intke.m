@@ -159,7 +159,7 @@ ax=gca; ax.FontSize=5; xlim([0, T])
 xlabel("$t$",intp,ltx,fs,4); ylabel("$TKE(t)$",intp,ltx,fs,4);
 %ylim([0.03 0.04]);
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
-leg.ItemTokenSize = [16,18];
+leg.ItemTokenSize = [12,18];
 formatfig(ax); print(gcf,"intke","-dpdf","-r300"); close(1)
 
 figure(2)
@@ -169,7 +169,7 @@ ylabel("$|TKE(t)-TKE_{ROM}(t)|/|TKE(t)|$",intp,ltx,fs,4);
 xlim([0, T])
 ylim([1e-5 1e2])
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',2);
-leg.ItemTokenSize = [16,18]
+leg.ItemTokenSize = [12,18]
 formatfig(ax)
 print(gcf,"intke_err","-dpdf","-r300")
 close(2)

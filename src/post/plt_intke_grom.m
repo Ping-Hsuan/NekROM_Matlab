@@ -82,15 +82,25 @@ for ii=1:size(nb_list,2)
 end
 figure(1);
 ax=gca; ax.FontSize=5; xlim([0, T])
-xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
+xlabel("$t$",intp,ltx,fs,4); ylabel("$TKE$",intp,ltx,fs,4);
 %ylim([0.03 0.04]);
-leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',3);
+LH(1) = plot(nan, nan, 'k-');
+L{1} = "Projection";
+LH(2) = plot(nan, nan, 'k-.');
+L{2} = "G-ROM";
+for ii=1:size(nb_list,2)
+    nb=nb_list(ii);
+    LH(ii+2) = plot(nan, nan, '-',cr,cmap(ii,:));
+    L{ii+2} = "$N="+nb+"$";
+end
+leg = legend(LH, L, fs,5,intp,ltx,'location','northwest','NumColumns',2);
 leg.ItemTokenSize = [12,18];
 formatfig(ax); print(gcf,"intke_grom","-dpdf","-r300"); close(1)
 
 figure(2);
 ax=gca; ax.FontSize=5;
-xlabel("$t$",intp,ltx,fs,6); ylabel("$TKE$",intp,ltx,fs,6);
+xlabel("$t$",intp,ltx,fs,4);
+ylabel("$|TKE(t)-TKE_{ROM}(t)|/|TKE(t)|$",intp,ltx,fs,4);
 xlim([0, T]); ylim([1e-5 1e2])
 leg = legend({}, fs,5,intp,ltx,'location','best','NumColumns',3);
 leg.ItemTokenSize = [12,18]
