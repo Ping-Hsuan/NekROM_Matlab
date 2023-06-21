@@ -10,12 +10,10 @@ else
    error('did not find mor.json, exiting ...');
 end
 
-date = "0621"
 mkdir(date);
 CTUs =num2str(nsteps*dt)+"CTUs"
 outputdir = fullfile(date,CTUs);
 mkdir(outputdir);
-pause;
 
 global relax dfRadius
 % Parameter space
