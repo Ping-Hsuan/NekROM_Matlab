@@ -33,7 +33,7 @@ global dfOrder dfRadius
 nb_list = [10, 20, 30, 40, 60, 70, 80, 90, 100];
 for ii=1:size(nb_list,2)
     nb = nb_list(ii)
-    for order=2:4
+    for order=1:4
     T = table;
     T1 = table;
     T2 = table;
