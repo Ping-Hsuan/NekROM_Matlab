@@ -93,6 +93,10 @@ for ii=1:size(nb_list,2)
             
             ucoef=zeros((nsteps/iostep),nb+1);
             tcoef=zeros((nsteps/iostep),nb+1);
+
+            casedir= sprintf('%s_%d_%d_%.8f_%.8f',roms(kk),nb,dfOrder,dfRadius,relax)
+            dir = fullfile(outputdir,casedir);
+            mkdir(dir);
             
             for istep=1:nsteps
                ito=min(istep,3);
@@ -175,9 +179,6 @@ for ii=1:size(nb_list,2)
                end
             end
             
-            casedir= sprintf('%s_%d_%d_%.8f_%.8f',roms(kk),nb,dfOrder,dfRadius,relax)
-            dir = fullfile(outputdir,casedir);
-            mkdir(dir);
 
             fileID = fopen(dir+"/ua",'w');
             fprintf(fileID,"%24.15e\n",ua);
