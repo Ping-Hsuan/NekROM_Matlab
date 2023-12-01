@@ -1,4 +1,4 @@
 # NekROM_Matlab
 ## Features
 - Time integrate NekROM operators
-- Postprocess
+- Postprocess - plotting
